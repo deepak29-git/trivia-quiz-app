@@ -1,9 +1,5 @@
 export type QuizAction =
   | {
-      type: "SHOW_MESSAGE";
-      payload: string;
-    }
-  | {
       type: "INPUT_ANSWER";
       payload: string;
     }
@@ -17,6 +13,10 @@ export type QuizAction =
     }
   | {
       type: "ERROR";
+      payload: string;
+    }
+  | {
+      type: "SHOW_MESSAGE";
       payload: string;
     };
 
