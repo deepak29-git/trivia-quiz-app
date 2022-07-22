@@ -6,7 +6,7 @@ import { Button, FormControl, TextField, Typography } from "@mui/material";
 import "../Quiz/Quiz.css";
 export const Quiz = () => {
   const [validate, setValidate] = useState(false);
-
+  const [currentQuestion,setCurrentQuestion]=useState("")
   const initialState: InitialState = {
     inputAnswer: "",
     loading: false,
@@ -23,14 +23,20 @@ export const Quiz = () => {
       setValidate(true);
       return;
     }
-    const answer = data.map((quiz: any) => quiz.answer).toString();
+    const answer = data.map((quiz: any) => quiz.correct_answer).toString();
     if (inputAnswer === answer) {
       dispatch({ type: "SHOW_MESSAGE", payload: "Correct Answer" });
     } else {
       dispatch({ type: "SHOW_MESSAGE", payload: "Wrong Answer" });
     }
     getData(dispatch);
+    setCurrentQuestion(data)
   };
+
+
+  const backBtnHandler=()=>{
+    dispatch({type:"DATA",payload:currentQuestion})
+  }
 
   useEffect(() => {
     getData(dispatch);
@@ -40,8 +46,8 @@ export const Quiz = () => {
     <div>
       {loading && <h2>Loading...</h2>}
       {data &&
-        data.map(({ id, question }: { id: number; question: string }) => (
-          <div key={id}>
+        data.map(({ question }: {  question: string }) => (
+          <div key={question}>
             <Typography className="question">
               <strong>Question:</strong> {question} ?
             </Typography>
@@ -68,6 +74,13 @@ export const Quiz = () => {
           onClick={submitHandler}
         >
           Submit
+        </Button>
+        <Button
+          sx={{ marginTop: 3 }}
+          variant="outlined"
+          onClick={backBtnHandler}
+        >
+          Back
         </Button>
         <h4 style={{ color: message === "Correct Answer" ? "#84cc16" : "red" }}>
           {message}
